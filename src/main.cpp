@@ -1,27 +1,21 @@
 #include <Arduino.h>
 
+unsigned int oTime = 0;
+unsigned int cTime = 0;
+unsigned int time = 0;
 
-  const int A = A0;  
-  int ulaz = 0;
-  float napon;
-
-void setup() 
-{
-
-  pinMode(A, INPUT); 	
-   Serial.begin(9600);
+void yell() {
+  cTime = millis();
+  time = cTime - oTime;
+  oTime = cTime;
 }
 
-void loop() 
-{
-  ulaz = analogRead(A);
-  napon = ulaz / 1023 * 5;
+void setup() {
+  Serial.begin(9600);
+  pinMode(2, INPUT);
+  attachInterrupt(digitalPinToInterrupt(2),yell,RISING);
+}
 
-  Serial.print(ulaz);
-  Serial.print("\n");
-  Serial.print("Napon: ");
-  Serial.print(napon);
-  Serial.print("\n");
-
-  delay(100);
+void loop() {
+  Serial.println(time);
 }
